@@ -53,13 +53,12 @@ class _tokens extends CI_Model
         $this->db->where('status','active');
         return $this->db->get()->result_array();
     }
+
     public function create_access_token($id)
     {
         $this->load->helper('string');
-        $access_token = random_string('alnum', 80);
-        if(!empty($this->check_access_token($access_token))){
-            $access_token = random_string('alnum', 80);
-        }
+
+        $access_token = $this->check_duplicat_access_token();
         $data = array(
             'status'     =>'active',
             'access_token'=>$access_token
@@ -78,6 +77,17 @@ class _tokens extends CI_Model
         $this->db->where('id',$id);
         $this->db->update(self::TOKENS_TABLE,$data);
     }
+    public function check_duplicat_access_token()
+    {
+        $this->load->helper('string');
+        $access_token = random_string('alnum', 80);
 
+        if(!empty($this->check_access_token($access_token))){
+            $this->check_duplicat_access_token();
+            die();
+        } else {
+            return $access_token;
+        }
 
+    }
 }

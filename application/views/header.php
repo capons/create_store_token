@@ -9,6 +9,7 @@
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
+    <script src="<?php echo base_url();?>assets/clipboard/dist/clipboard.min.js"></script>
     <style>
         .container {
             border-top: 7px solid #337ab7;
@@ -27,6 +28,7 @@
     <![endif]-->
 </head>
 <body>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-2">

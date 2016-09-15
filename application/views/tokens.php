@@ -27,7 +27,8 @@
             <td><?php echo $token->status;?></td>
             <td><?php echo $token->last_login;?></td>
             <td>
-                <a href="#"  class="btn-clipboard" onclick="copyToClipboard(this)" data-clipboard-target="<?php echo $token->token;?>" class="btn btn-primary">Copy</a>
+                <!--onclick="copyToClipboard(this)" -->
+                <a href="#"  class="btn-clipboard"  data-clipboard-text="<?php echo $token->token;?>" class="btn btn-primary">Copy</a>
                 <a href="<?php echo base_url('admin/change_status/'. $token->id . '?status=expired&back=' . $store->id);?>" class="btn btn-primary">Deactivate</a>
             </td>
         </tr>
@@ -38,9 +39,17 @@
 </div>
 </div>
 <script>
-    new Clipboard('.btn-clipboard'); // Не забываем инициализировать библиотеку на нашей кнопке
-    function copyToClipboard(obj) {  //copy TOKEN in buffer
-        var one = obj.getAttribute('data-clipboard-target');
-        window.prompt("Copy to clipboard: Ctrl+C, Enter", one);
-    }
+    var clipboard = new Clipboard('.btn-clipboard');// Не забываем инициализировать библиотеку на нашей кнопке
+    clipboard.on('success', function(e) {
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function(e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });
 </script>

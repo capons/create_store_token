@@ -24,7 +24,7 @@ class Main extends CI_Controller
             ]);
         } else { //if token activate or token expired
             $this->response([
-                'auth_token' => false
+                'auth_token' => 'Invalid token'
             ]);
         }
     }
@@ -39,16 +39,23 @@ class Main extends CI_Controller
                 $this->_tokens->last_token_login($check[0]['id']); //update last login date
                 $store_tills = $this->_stores->get_store_pills($check[0]['store_id']);
                 $this->response([
-                    'number_of_tills' => $store_tills[0]['number_of_tills']
+                    'store_name' => $store_tills[0]['name'],
+                    'address_line_1' => $store_tills[0]['address_line_1'],
+                    'address_line_2' => $store_tills[0]['address_line_2'],
+                    'town' => $store_tills[0]['town'],
+                    'post_code' => $store_tills[0]['post_code'],
+                    'country_name' => $store_tills[0]['country'],
+                    'pouch_id_option' => $store_tills[0]['pouch_id_option'],
+                    'number_of_tills' => $store_tills[0]['number_of_tills'],
                 ]);
             } else {
                 $this->response([
-                    'number_of_tills' => false
+                    'number_of_tills' => 'Invalid token'
                 ]);
             }
         } else {
             $this->response([
-                'number_of_still' => false
+                'number_of_still' => 'Invalid token'
             ]);
         }
     }

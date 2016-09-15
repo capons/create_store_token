@@ -25,7 +25,7 @@ class _stores extends CI_Model
         );
         $this->db->from(self::STORES_TABLE . ' stores');
         $this->db->join(self::STORES_TABLE . ' countries', 'stores.country_id=countries.id', 'left');
-
+        $this->db->where('stores.id', $customerId);
         if ($filter) {
             $this->db->like('stores.name', $filter);
         }
@@ -60,8 +60,15 @@ class _stores extends CI_Model
     }
     public function get_store_pills($id)
     {
+        $this->db->select(
+            '
+            stores.*,
+            countries.name as country
+            '
+        );
         $this->db->from(self::STORES_TABLE);
-        $this->db->where('id',$id);
+        $this->db->join('countries','countries.id = stores.country_id');
+        $this->db->where('stores.id',$id);
         return $this->db->get()->result_array();
     }
 }
