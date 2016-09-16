@@ -19,15 +19,21 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $this->customers();
+        //$this->customers();
+        redirect('/admin/customers');
     }
-
 
     //CUSTOMERS
     public function customers()
     {
         $this->load->model('_customers');
-        $data = $this->_customers->get_list(empty($_GET['search'])? NULL : $_GET['search']);
+       // $data = $this->_customers->get_list(empty($_GET['search'])? NULL : $_GET['search']);
+        if(!empty($_GET['field'])){
+            $data = $this->_customers->get_list(empty($_GET['search'])? NULL : $_GET['search'],$_GET['field'],$_GET['sort']);
+        } else {
+            $data = $this->_customers->get_list(empty($_GET['search'])? NULL : $_GET['search']);
+
+        }
         $this->load->view('header', array(
             'breadcrumbs' => array(
                 'Main' => base_url('admin'),
@@ -107,6 +113,24 @@ class Admin extends CI_Controller
         $this->session->set_flashdata('message', 'Update successfully');
         redirect('admin/countries');
     }
+
+    public function country_delete($id)
+    {
+        $this->load->model('_countries');
+        $check = $this->_countries->check_country($id);
+        if($check){
+            $this->session->set_flashdata('error', 'The country is already in use');
+            redirect('admin/countries');
+        }
+        $delete = $this->_countries->delete($id);
+        if($delete){
+            $this->session->set_flashdata('message', 'Delete successfully');
+            redirect('admin/countries');
+        } else {
+            $this->session->set_flashdata('error', 'Delete error');
+            redirect('admin/countries');
+        }
+    }
     
     public function country_add()
     {
@@ -128,6 +152,7 @@ class Admin extends CI_Controller
             redirect('404');
         }
         $stores = $this->_stores->get_stores($customer_id, empty($_GET['search'])? NULL : $_GET['search']);
+
         $this->load->view('header', array(
             'breadcrumbs' => array(
                 'Main' => base_url('admin'),
@@ -157,16 +182,16 @@ class Admin extends CI_Controller
             if (FALSE === ($customer = $this->_customers->get($store->customer_id))) {
                 redirect('404');
             }
+
             $this->load->view('header',array(
                 'breadcrumbs' => array(
                     'Main' => base_url('admin'),
                     'Customers' => base_url('admin/customers'),
-                    $customer->name => base_url('admin/edit_customer/'.$customer->id),
-                    'Stores' => base_url('admin/stored/'.$customer->id),
+                    $customer->name => base_url('admin/customer_edit/'.$customer->id),
+                    'Stores' => base_url('admin/stores/'.$customer->id),
                     $store->name => NULL
                 )
             ));
-
             $this->load->model('_countries');
             $this->load->view('store_edit', array(
                 'store' => $store,
@@ -201,11 +226,12 @@ class Admin extends CI_Controller
     {
         $this->load->model('_stores');
         $this->_stores->add($this->input->post());
+
         if (!empty($_GET['back'])) {
-            $this->session->set_flashdata('message', 'Add successfully');
+            $this->session->set_flashdata('message', 'New store added successfully');
             redirect('admin/stores/'.$_GET['back']);
         }
-        $this->session->set_flashdata('message', 'Add successfully');
+        $this->session->set_flashdata('message', 'New store added successfully');
         redirect('admin');
     }
 
@@ -250,10 +276,10 @@ class Admin extends CI_Controller
         $this->load->model('_tokens');
         $this->_tokens->generate($store_id,$this->input->post('number'));
         if (!empty($_GET['back'])) {
-            $this->session->set_flashdata('message', 'Generate successfully');
+            $this->session->set_flashdata('message', 'Token generate successfully');
             redirect('admin/tokens/' . $_GET['back']);
         } else {
-            $this->session->set_flashdata('message', 'Generate successfully');
+            $this->session->set_flashdata('message', 'Token generate successfully');
             redirect('admin');
         }
     }
@@ -278,11 +304,13 @@ class Admin extends CI_Controller
         if ($this->input->method() == 'post') {
             $this->load->helper('crypt');
             if ((empty($this->input->post('email'))) || (empty($this->input->post('password')))) {
+
                 redirect('admin/login?error=Please fill all fields');
             }
             $this->load->model('_users');
             if (FALSE === ($user = $this->_users->login($this->input->post('email'), $this->input->post('password')))) {
-                redirect('admin/login?error=Incorrect email or password. Please try again');
+                $this->session->set_flashdata('error', 'Invalid username or password');
+                redirect('admin/login');
             }
             $this->session->set_userdata(array(
                 'uid' => $user

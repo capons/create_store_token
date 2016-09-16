@@ -9,17 +9,11 @@
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/index.css');?>" rel="stylesheet">
     <script src="<?php echo base_url();?>assets/clipboard/dist/clipboard.min.js"></script>
-    <style>
-        .container {
-            border-top: 7px solid #337ab7;
-            padding-top: 30px;
-        }
-
-        .table th:first-child {
-            width: 70px;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>assets/js/index.js"></script>
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -32,11 +26,13 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
+            <?php if ($this->session->userdata('uid')){ ?>
             <ul class="nav nav-pills nav-stacked">
-                <li><a href="<?php echo base_url('admin/customers');?>">Customers</a></li>
-                <li><a href="<?php echo base_url('admin/countries');?>">Countries</a></li>
-                <li><a href="<?php echo base_url('admin/log_off');?>">Log off</a></li>
+                <li class="<?php if($this->uri->segment(2)=="customers"){echo "active";}?>"><a href="<?php echo base_url('admin/customers');?>">Customers</a></li>
+                <li class="<?php if($this->uri->segment(2)=="countries"){echo "active";}?>"><a href="<?php echo base_url('admin/countries');?>">Countries</a></li>
+                <li><a href="<?php echo base_url('admin/log_off');?>">Log out</a></li>
             </ul>
+            <?php } ?>
         </div>
 
         <div class="col-sm-10">

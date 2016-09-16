@@ -1,7 +1,16 @@
 <form class="form-horizontal" action="<?php echo base_url('admin/generate/' . $store->id . '?back='.$store->id);?>" method="POST">
     <div class="form-group">
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputSearch" placeholder="Number of tokens to generate" required name="number">
+            <select name="number" placeholder="Number of tokens to generate"  class="form-control">
+                <?php
+                $j = 1;
+                for ($i=1; $i<=20; $i++){
+                    ?>
+                    <option value="<?php echo $j; ?>"><?php echo $j; ?></option>
+                    <?php
+                    $j++;
+                } ?>
+            </select>
         </div>
         <div class="col-sm-2">
             <button type="submit" class="btn btn-primary">Generate</button>

@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://token';
+$config['base_url'] = 'http://token'; //http://178.20.156.44:86
 
 /*
 |--------------------------------------------------------------------------

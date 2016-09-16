@@ -4,9 +4,11 @@ class Main extends CI_Controller
 {
     public function index()
     {
+        /*
         $this->response([
             'a' => 1
         ]);
+        */
     }
     //create access token
     public function checkToken()

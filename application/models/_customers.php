@@ -10,8 +10,9 @@ class _customers extends CI_Model
         $this->load->database();
     }
 
-    public function get_list($filter = NULL)
+    public function get_list($filter = NULL, $field = NULL, $sort = NULL)
     {
+
         $this->db->select(
             'customers.id,
             customers.name AS name,
@@ -19,11 +20,31 @@ class _customers extends CI_Model
             customers.address_line_2,
             customers.town,
             customers.post_code,
+            customers.created,
             countries.name AS country
             '
         );
+
         $this->db->from(self::CUSTOMERS_TABLE . ' customers');
         $this->db->join(self::COUNTRIES_TABLE . ' countries', 'customers.country_id=countries.id', 'left');
+        if($field) {
+            $sort_array_data = [ //all sorting table rows
+                'name' => 'name',
+                'country' => 'country',
+                'created' => 'customers.created'
+            ];
+            if(array_key_exists($field,$sort_array_data)){
+                $s_field = $sort_array_data[$field];
+            } else {
+                $s_field = '';
+            }
+
+            $this->db->order_by($s_field, $sort);
+
+        } else {
+            $this->db->order_by("customers.created", "desc");
+
+        }
 
         if ($filter) {
             $this->db->like('customers.name', $filter);

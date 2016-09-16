@@ -10,30 +10,30 @@
         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
                 <form action="<?php echo base_url('admin/store_add?back='.$customer->id);?>" method="POST">
-                    <input type="text" name="customer_id" value="<?php echo $customer->id;?>" style="display: none;" >
+                    <input  type="text" name="customer_id" value="<?php echo $customer->id;?>" style="display: none;" >
                     <div class="form-group">
-                        <label for="name">Customer name</label>
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+                        <label for="name">Store name</label>
+                        <input type="text" name="name" class="form-control" id="name" required placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="address_line_1">Address line 1</label>
-                        <input type="text" name="address_line_1" class="form-control" id="address_line_1" placeholder="Address line 1">
+                        <input type="text" name="address_line_1" class="form-control" id="address_line_1" required placeholder="Address line 1">
                     </div>
                     <div class="form-group">
                         <label for="address_line_2">Address line 2</label>
-                        <input type="text" name="address_line_2" class="form-control" id="address_line_2" placeholder="Address line 2">
+                        <input type="text" name="address_line_2" class="form-control" id="address_line_2" required placeholder="Address line 2">
                     </div>
                     <div class="form-group">
                         <label for="town">Town</label>
-                        <input type="text" name="town" class="form-control" id="town" placeholder="Town">
+                        <input type="text" name="town" class="form-control" id="town" required placeholder="Town">
                     </div>
                     <div class="form-group">
                         <label for="post_code">Post code</label>
-                        <input type="text" name="post_code" class="form-control" id="post_code" placeholder="Post code">
+                        <input type="text" name="post_code" class="form-control" id="post_code" required placeholder="Post code">
                     </div>
                     <div class="form-group">
                         <label for="country">Country</label>
-                        <select name="country_id" class="form-control" id="country">
+                        <select name="country_id" class="form-control" required id="country">
                             <?php foreach($countries as $country) :?>
                                 <option value="<?php echo $country->id;?>"><?php echo $country->name;?></option>
                             <?php endforeach;?>
@@ -41,14 +41,14 @@
                     </div>
                     <div class="form-group">
                         <label for="pouch_id_option">Post code</label>
-                        <select name="pouch_id_option" class="form-control">
+                        <select name="pouch_id_option" required class="form-control">
                             <option value="barcode">Barcode</option>
                             <option value="increment">Increment</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="number_of_tills">Number of tills</label>
-                        <input type="text" name="number_of_tills" class="form-control" id="number_of_tills" placeholder="Number of tills">
+                        <input type="number"  name="number_of_tills" class="form-control" required id="number_of_tills" placeholder="Number of tills">
                     </div>
                     <button type="submit" class="btn btn-primary">Add store</button>
                 </form>

@@ -11,6 +11,7 @@ class _stores extends CI_Model
 
     public function get_stores($customerId, $filter = NULL)
     {
+
         $this->db->select(
             'stores.id,
             stores.name AS name,
@@ -25,7 +26,7 @@ class _stores extends CI_Model
         );
         $this->db->from(self::STORES_TABLE . ' stores');
         $this->db->join(self::STORES_TABLE . ' countries', 'stores.country_id=countries.id', 'left');
-        $this->db->where('stores.id', $customerId);
+        $this->db->where('stores.customer_id', $customerId);
         if ($filter) {
             $this->db->like('stores.name', $filter);
         }
